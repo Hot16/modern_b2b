@@ -17,7 +17,8 @@ class RedirectIfAuthenticated
      */
     public function handle($request, Closure $next, $guard = null)
     {
-        if (Auth::guard($guard)->check()) {
+        $uri = $request->getRequestUri();
+        if (Auth::guard($guard)->check() and $uri != '/register') {
             return redirect('/home');
         }
 

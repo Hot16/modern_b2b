@@ -47,6 +47,8 @@ class ImportController extends Controller
 
            \App\Prices::create($inserted_data);
        }
+
+       return back()->with('status', 'Импорт завершен');
    }
 
    static function unique($article){

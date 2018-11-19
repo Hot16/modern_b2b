@@ -21,6 +21,8 @@ Route::get('/home', 'HomeController@index')->name('home');
 
 Route::get('/upload', 'UploadController@index')->name('upload');
 Route::post('/upload', 'UploadController@upload');
+
+Route::get('/users', 'UsersController@show')->name('users_show');
 /*    [
         'before' => 'csrf',
         function()
@@ -29,4 +31,4 @@ Route::post('/upload', 'UploadController@upload');
         }
     ]
 );*/
-Route::get('/import', 'ImportController@import');
+Route::get('/import', 'ImportController@import')->name('import');

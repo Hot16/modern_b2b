@@ -12,6 +12,9 @@
                             <div class="alert alert-success" role="alert">
                                 {{ session('status') }}
                                 {{ session('price') }}
+                                @if(session('status') != 'Импорт завершен')
+                                <a href="{{ route('import') }}">{{ __('Импортировать') }}</a>
+                                @endif
                             </div>
                         @endif
 

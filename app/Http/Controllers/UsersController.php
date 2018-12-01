@@ -13,7 +13,13 @@ class UsersController extends Controller
     }
 
     public function show(){
-        $users = User::all(['name', 'email']);
-        return view('users')->with('users');
+        $users_m = User::all(['id','name', 'email']);
+        return view('users', ['users'=>$users_m]);
+    }
+
+    public function delete($id){
+        $d = User::where('id', '=', $id)->delete();
+        $users_m = User::all(['id','name', 'email']);
+        return view('users', ['users'=>$users_m]);
     }
 }

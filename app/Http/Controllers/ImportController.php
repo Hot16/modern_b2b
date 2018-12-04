@@ -25,6 +25,9 @@ class ImportController extends Controller
            $articul = trim($value[0]);
            $articul = iconv('cp1251', 'utf8', $articul);
            $articul = str_replace('М', 'M', $articul);
+           $articul = str_replace(' ', '', $articul);
+           $articul = str_replace('(', '-', $articul);
+           $articul = str_replace(')', '', $articul);
 
            $unique = ImportController::unique($articul);
 
@@ -35,20 +38,21 @@ class ImportController extends Controller
            $inserted_data=[
                'article'=>$articul,
                'name'=>iconv('cp1251', 'utf8', $value[1]),
-               'price_0'=>$value[2],
-               'price_1'=>$value[3],
-               'price_2'=>$value[4],
-               'price_3'=>$value[5],
-               'price_4'=>$value[6],
-               'price_5'=>$value[7],
-               'qty'=>$value[8],
-               'data'=>$value[9]
+               'price_0'=>(int)$value[2],
+               'price_1'=>(int)$value[3],
+               'price_2'=>(int)$value[4],
+               'price_3'=>(int)$value[5],
+               'price_4'=>(int)$value[6],
+               'price_5'=>(int)$value[7],
+               'qty'=>(int)$value[8],
+               'data'=>iconv('cp1251', 'utf8', $value[9])
            ];
 
            \App\Prices::create($inserted_data);
        }
 
-       return back()->with('status', 'Импорт завершен');
+       return view('upload')->with('status', 'Импорт завершен');
+       die();
    }
 
    static function unique($article){

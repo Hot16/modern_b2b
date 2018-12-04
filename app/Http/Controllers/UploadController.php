@@ -16,11 +16,11 @@ class UploadController extends Controller
     }
 
     public function upload(Request $request){
-/*        $validatedData = $request->validate([
+        $request->validate([
 
-            'price' => 'mimetypes:text\csv',
+            'price' => 'required',
 
-        ]);*/
+        ]);
 
 /*        $validator = \Validator::make($request->all(), [
             'price' => 'required|mimes:csv',

@@ -17,7 +17,9 @@ window.Vue = require('vue');
  * Eg. ./components/ExampleComponent.vue -> <example-component></example-component>
  */
 
-Vue.component('example-component', require('./components/ExampleComponent.vue'));
+//Vue.component('example-component', require('./components/ExampleComponent.vue'));
+
+Vue.component('upload-form', require('./components/UploadForm.vue'));
 
 // const files = require.context('./', true, /\.vue$/i)
 

@@ -23,6 +23,11 @@ class CatalogController extends Controller
 
     public function get_articles(Request $request){
         $articles = json_decode($request->articles, true);
+        $token = $request->token;
+        $in_token = $this->getToken();
+        if ($token != $in_token){
+            die('Autorization error');
+        }
         $username = $request->username;
         $price_level = $this->getPriceLevel($username);
         $catalog = Prices::select('article', 'name', 'price_'.$price_level.' as price')->
@@ -38,5 +43,9 @@ class CatalogController extends Controller
             $price_level = 0;
         }
         return $price_level;
+    }
+
+    private function getToken(){
+        return md5('185modern-it.ru916');
     }
 }

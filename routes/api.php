@@ -17,7 +17,9 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::get('/get_catalog', 'API\CatalogController@get_list');//middleware('auth:api')->
+Route::get('/get_catalog', 'API\CatalogController@get_list');
+
+Route::post('/get_catalog', 'API\CatalogController@get_articles');//middleware('auth:api')->
 
 Route::get('/import', 'API\ImportController@import');
 

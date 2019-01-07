@@ -20,6 +20,12 @@ class ImportController extends Controller
         while(!feof($fileD)){
             $rowData[]=fgetcsv($fileD, 0,';');
         }
+
+        $summary = ['total_str' => count($rowData),
+            'total_imported' => 0,
+            'doubled' => 0,
+            'doubled_item' => []
+            ];
         foreach ($rowData as $key => $value) {
 
             $articul = trim($value[0]);
@@ -32,6 +38,8 @@ class ImportController extends Controller
             $unique = ImportController::unique($articul);
 
             if (!$unique){
+                $summary['doubled'] += 1;
+                $summary['doubled_items'][] = $articul. ' '. iconv('cp1251', 'utf8', $value[1]);
                 continue;
             }
 
@@ -47,11 +55,12 @@ class ImportController extends Controller
                 'qty'=>(int)$value[8],
                 'data'=>iconv('cp1251', 'utf8', $value[9])
             ];
-
+            $summary['total_imported'] += 1;
             \App\Prices::create($inserted_data);
         }
-
-        return 'Импорт завершен';
+        $resp = ['status'=>'Импорт завершен',
+            'summary' => $summary];
+        return $resp;
     }
 
     static function unique($article){

@@ -23,8 +23,8 @@ class UploadController extends Controller
 
         $request->price->move(storage_path('upload_price'), $fileName);
 
+        $resp = ['status'=>'Загрузка завершена'];
 
-
-        return 'Загрузка завершена';
+        return $resp;
     }
 }

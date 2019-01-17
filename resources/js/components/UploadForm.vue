@@ -56,20 +56,22 @@
                 var formData = new FormData();
                 var upload_form = this;
                 formData.append('price', this.file);
-                axios.post( '/api/upload',
+                axios.post('/api/upload',
                     formData,
                     {
                         headers: {
-                            'Content-Type': 'multipart/form-data'
+                            'Content-Type': 'multipart/form-data',
+                            'Authorization': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+
                         }
                     }
-                ).then(function(msg){
+                ).then(function (msg) {
                     upload_form.message = msg.data.status;
                     console.log('msg', msg);
-                }).catch(function(msg){
+                }).catch(function (msg) {
 
-                        console.log('FAILURE!! msg', msg);
-                    });
+                    console.log('FAILURE!! msg', msg);
+                });
             },
 
             importPrice: function () {

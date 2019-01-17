@@ -22,7 +22,7 @@ Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
 
 Route::get('/upload', 'UploadController@index')->name('upload');
-Route::post('/upload', 'UploadController@upload');
+//Route::post('/upload', 'UploadController@upload');
 
 Route::get('/users', 'UsersController@show')->name('users_show');
 Route::get('/users/delete/{id}', 'UsersController@delete')->name('user_delete');

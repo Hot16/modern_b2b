@@ -24,3 +24,9 @@ Route::post('/get_catalog', 'API\CatalogController@get_articles');//middleware('
 Route::get('/import', 'API\ImportController@import');
 
 Route::post('/upload', 'API\UploadController@upload');
+
+//Route::middleware('auth:api')->post('/upload', 'API\UploadController@upload');
+
+Route::get('/upload', function (){
+    return abort(404);
+});

@@ -26,7 +26,7 @@ class CatalogController extends Controller
         $token = $request->token;
         $in_token = $this->getToken();
         if ($token != $in_token){
-            die('Autorization error');
+            die('Authorization error');
         }
         $username = $request->username;
         $price_level = $this->getPriceLevel($username);

@@ -37,9 +37,3 @@ Route::get('/users/delete/{id}', 'UsersController@delete')->name('user_delete');
 Route::get('/import', 'ImportController@import')->name('import');
 
 Route::get('/catalog', 'CatalogController@show')->name('catalog_show');
-
-Route::get('/clients', 'ClientsController@show')->name('clients_show');
-Route::get('/clients/new', function (){
-    return view('clients.clients_form');
-})->name('clients_new');
-Route::post('clients/new', 'ClientsController@create');

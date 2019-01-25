@@ -30,3 +30,9 @@ Route::post('/upload', 'API\UploadController@upload');
 Route::get('/upload', function (){
     return abort(404);
 });
+
+Route::get('/showClients', 'API\ClientsController@show');
+Route::post('/addClient', 'API\ClientsController@create');
+
+Route::post('/deleteClient', 'API\ClientsController@delete');
+Route::post('/getClient', 'API\ClientsController@getClient');

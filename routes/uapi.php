@@ -19,3 +19,5 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 Route::get('/get_catalog', 'API\CatalogController@get_list');
 
 Route::post('/get_catalog', 'API\CatalogController@get_articles');//middleware('auth:api')->
+
+Route::post('/get_price_level', 'API\CatalogController@getPriceLevelExt');

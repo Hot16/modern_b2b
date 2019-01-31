@@ -35,6 +35,12 @@ class CatalogController extends Controller
         return $catalog;
     }
 
+    public function getPriceLevelExt(Request $request){
+        $username = $request->username;
+        $price_level = $this->getPriceLevel($username);
+        return $price_level;
+    }
+
     private function getPriceLevel($username){
         $client = Clients::whereLogin($username)->first();
         if (!is_null($client)){

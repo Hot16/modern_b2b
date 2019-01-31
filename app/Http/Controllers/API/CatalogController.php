@@ -38,6 +38,7 @@ class CatalogController extends Controller
     public function getPriceLevelExt(Request $request){
         $username = $request->username;
         $price_level = $this->getPriceLevel($username);
+        $price_level = json_encode($price_level);
         return $price_level;
     }
 

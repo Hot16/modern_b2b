@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use App\LogImport;
 use App\Prices;
 use Illuminate\Http\Request;
 
@@ -63,6 +64,16 @@ class ImportController extends Controller
             $summary['total_imported'] += 1;
             \App\Prices::create($inserted_data);
         }
+
+        $fc = fclose($fileD);
+        $fd = unlink(storage_path('upload_price').'/price.csv');
+        $summary['file_close'] = $fc;
+        $summary['file_delete'] = $fd;
+        $user = auth()->user();
+        LogImport::create([
+            'id_user'=>$user->id,
+            'log'=>json_encode($summary)
+            ]);
         $resp = ['status'=>'Импорт завершен',
             'summary' => $summary];
         return $resp;

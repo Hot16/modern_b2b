@@ -5,6 +5,7 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use App\LogImport;
 use App\Prices;
+use App\User;
 use Illuminate\Http\Request;
 
 class ImportController extends Controller
@@ -21,7 +22,12 @@ class ImportController extends Controller
                $fileD_utf = iconv('cp1251', 'utf8', $content);
                $f_wr = file_put_contents(storage_path('upload_price').'/price_utf.csv', $fileD_utf);*/
 
+        if (!file_exists(storage_path('upload_price').'/price.csv')){
+            return ['status' => 'Файл не найден'];
+        }
+
         $fileD = fopen(storage_path('upload_price').'/price.csv',"r");
+
         $column = fgetcsv($fileD);
         while(!feof($fileD)){
             $rowData[]=fgetcsv($fileD, 0,';');
@@ -70,6 +76,9 @@ class ImportController extends Controller
         $summary['file_close'] = $fc;
         $summary['file_delete'] = $fd;
         $user = auth()->user();
+        if (is_null($user)){
+            $user = User::where('name' , '=', 'System')->first();
+        }
         LogImport::create([
             'id_user'=>$user->id,
             'log'=>json_encode($summary)

@@ -16,16 +16,16 @@ class ImportController extends Controller
     }
 
     public function import(){
-        \App\Prices::truncate();
+        /*\App\Prices::truncate();
 
-        /*       $content = file_get_contents(storage_path('upload_price').'/price.csv');
+               $content = file_get_contents(storage_path('upload_price').'/price.csv');
                $fileD_utf = iconv('cp1251', 'utf8', $content);
                $f_wr = file_put_contents(storage_path('upload_price').'/price_utf.csv', $fileD_utf);*/
 
         if (!file_exists(storage_path('upload_price').'/price.csv')){
             return ['status' => 'Файл не найден'];
         }
-
+	\App\Prices::truncate();
         $fileD = fopen(storage_path('upload_price').'/price.csv',"r");
 
         $column = fgetcsv($fileD);

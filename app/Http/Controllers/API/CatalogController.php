@@ -30,7 +30,7 @@ class CatalogController extends Controller
         }
         $username = $request->username;
         $price_level = $this->getPriceLevel($username);
-        $catalog = Prices::select('article', 'name', 'price_'.$price_level.' as price')->
+        $catalog = Prices::select('article', 'name', 'price_'.$price_level.' as price', 'qty')->
             whereIn('article', $articles)->get();
         return $catalog;
     }

@@ -15,6 +15,8 @@
                         <th scope="col">Цена 3</th>
                         <th scope="col">Цена 4</th>
                         <th scope="col">Цена 5</th>
+                        <th scope="col">Цена 6</th>
+                        <th scope="col">Количество</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -28,6 +30,8 @@
                             <td>{{ $item->price_3 }}</td>
                             <td>{{ $item->price_4 }}</td>
                             <td>{{ $item->price_5 }}</td>
+                            <td>{{ $item->price_6 }}</td>
+                            <td>{{ $item->qty }}</td>
                         </tr>
                     @endforeach
                     </tbody>

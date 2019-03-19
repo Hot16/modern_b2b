@@ -64,8 +64,9 @@ class ImportController extends Controller
                 'price_3'=>(int)$value[5],
                 'price_4'=>(int)$value[6],
                 'price_5'=>(int)$value[7],
-                'qty'=>(int)$value[8],
-                'data'=>iconv('cp1251', 'utf8', $value[9])
+                'price_6'=>(int)$value[8],
+                'qty'=>(int)$value[9],
+                'data'=>iconv('cp1251', 'utf8', $value[10])
             ];
             $summary['total_imported'] += 1;
             \App\Prices::create($inserted_data);

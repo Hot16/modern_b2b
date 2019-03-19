@@ -11,7 +11,7 @@ class CatalogController extends Controller
     }
 
     public function show (){
-        $catalog = Prices::all(['article', 'name', 'price_0', 'price_1', 'price_2', 'price_3', 'price_4', 'price_5']);
+        $catalog = Prices::all(['article', 'name', 'price_0', 'price_1', 'price_2', 'price_3', 'price_4', 'price_5', 'price_6', 'qty']);
         return view('catalog', ['catalog'=>$catalog]);
     }
 }

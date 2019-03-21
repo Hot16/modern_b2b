@@ -52,7 +52,7 @@
                         <div class="form-group">
                             <label for="price_level">Уровень цен</label>
                             <select id="price_level" class="form-control" v-model="c.price_level">
-                                <option v-for="i in [0, 1, 2, 3, 4, 5]">{{ i }}</option>
+                                <option v-for="i in [0, 1, 2, 3, 4, 5, 6]">{{ i }}</option>
                             </select>
 
                         </div>

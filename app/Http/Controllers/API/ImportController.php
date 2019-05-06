@@ -25,7 +25,7 @@ class ImportController extends Controller
         if (!file_exists(storage_path('upload_price').'/price.csv')){
             return ['status' => 'Файл не найден'];
         }
-	\App\Prices::truncate();
+	    \App\Prices::truncate();
         $fileD = fopen(storage_path('upload_price').'/price.csv',"r");
 
         $column = fgetcsv($fileD);
@@ -35,13 +35,19 @@ class ImportController extends Controller
 
         $summary = ['total_str' => count($rowData),
             'total_imported' => 0,
+            'not_articul' => 0,
+            'not_price' => 0,
             'doubled' => 0,
             'doubled_item' => []
             ];
         foreach ($rowData as $key => $value) {
 
             $articul = trim($value[0]);
-            $articul = iconv('cp1251', 'utf8', $articul);
+            if ($articul == ''){
+                $summary['not_articul'] += 1;
+                continue;
+            }
+           // $articul = mb_convert_encoding($articul, 'cp1251', 'utf8');
             $articul = str_replace('М', 'M', $articul);
             $articul = str_replace(' ', '', $articul);
             $articul = str_replace('(', '-', $articul);
@@ -51,13 +57,24 @@ class ImportController extends Controller
 
             if (!$unique){
                 $summary['doubled'] += 1;
-                $summary['doubled_items'][] = $articul. ' '. iconv('cp1251', 'utf8', $value[1]);
+                $summary['doubled_items'][] = $articul. ' '. $value[1];
                 continue;
+            }
+
+            foreach (range(1,10) as $i){
+                if (!isset($value[$i])){
+                    $value[$i] = null;
+                }
+                $value[$i] = trim($value[$i]);
+            }
+
+            if ($value[9] == '' ){
+                $value[9] = '1';
             }
 
             $inserted_data=[
                 'article'=>$articul,
-                'name'=>iconv('cp1251', 'utf8', $value[1]),
+                'name'=> $value[1],
                 'price_0'=>(int)$value[2],
                 'price_1'=>(int)$value[3],
                 'price_2'=>(int)$value[4],
@@ -66,8 +83,18 @@ class ImportController extends Controller
                 'price_5'=>(int)$value[7],
                 'price_6'=>(int)$value[8],
                 'qty'=>(int)$value[9],
-                'data'=>iconv('cp1251', 'utf8', $value[10])
+                'data'=>$value[10]
             ];
+            $not_price = true;
+            foreach (range(0, 6) as $j){
+                if ($inserted_data['price_'.$j] !== 0){
+                    $not_price = false;
+                }
+            }
+            if ($not_price){
+                $summary['not_price'] += 1;
+                continue;
+            }
             $summary['total_imported'] += 1;
             \App\Prices::create($inserted_data);
         }

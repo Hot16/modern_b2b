@@ -21,6 +21,8 @@
                         <div v-if="message=='Импорт завершен'">
                             <p>Позиций в файле {{ summary.total_str }}</p>
                             <p>Импортировано позиций {{ summary.total_imported }}</p>
+                            <p>Нет артикулов {{ summary.not_articul }}</p>
+                            <p>Нет цен {{ summary.not_price }}</p>
                             <p>Дублирование артикулов {{ summary.doubled }}</p>
                             <p>Дублирующиеся строки</p>
                             <ul v-for="d_item in summary.doubled_items">

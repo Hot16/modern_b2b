@@ -65,6 +65,9 @@ class ImportController extends Controller
                 if (!isset($value[$i])){
                     $value[$i] = null;
                 }
+                if (in_array($i, range(2,9))){
+                    $value[$i] = preg_replace('/\s+/ui', '', $value[$i]);
+                }
                 $value[$i] = trim($value[$i]);
             }
 

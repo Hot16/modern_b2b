@@ -4,6 +4,7 @@ namespace App\Http\Controllers\API;
 
 use App\Clients;
 use App\Http\Controllers\Controller;
+use GuzzleHttp\Client;
 use Illuminate\Http\Request;
 
 class ClientsController extends Controller
@@ -30,6 +31,12 @@ class ClientsController extends Controller
         $email = $request->email;
         $price_level = $request->price_level;
 
+        $toModern = $this->sendToModernit($request);
+        if ($toModern != 'ok'){
+            return ['status' => 'not',
+                'status_msg'=>$toModern];
+        }
+
         if (is_null($price_level)){
             $price_level = 0;
         }
@@ -47,7 +54,8 @@ class ClientsController extends Controller
             );
         }
 
-        $resp = ['status'=>'Сохранили'];
+        $resp = ['status'=>'ok',
+            'status_msg' => 'Сохранили'];
         return $resp;
     }
 
@@ -55,6 +63,44 @@ class ClientsController extends Controller
         Clients::where('id', '=', $request->id)->delete();
         $resp = ['status'=>'Удалили'];
         return $resp;
+    }
+
+    public function sendToModernit($request){
+        $name = $request->name;
+        $login = $request->login;
+        $email = $request->email;
+        $password = $request->password;
+        $action = $request->action;
+        $data = [
+            'name' => $name,
+            'username' => $login,
+            'email' => $email,
+            'action' => $action,
+            'in' => md5($password),
+             'token' => md5('b2b.modern'.date('Y-m-d'))
+        ];
+        $ch = curl_init('http://127.0.0.1:8080/external_api/CreateUser.php?XDEBUG_SESSION_START');
+        curl_setopt($ch, CURLOPT_POST, 1);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        $result = curl_exec($ch);
+
+        curl_close($ch);
+
+        return $result;
+
+      /*  $cl = new Client();
+        $res = $cl->request('POST', 'http://127.0.0.1:8080/external_api/CreateUser.php?XDEBUG_SESSION_START',
+            [
+            'param'=>['name' => $name,
+            'login' => $login,
+            'email' => $email,
+            'in' => md5('123456'),
+            'token' => md5('b2b.modern'.date('Y-m-d'))
+            ]
+        ]);
+
+        $a = $res->getBody();*/
     }
 
 }

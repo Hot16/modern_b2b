@@ -27,7 +27,7 @@
                 </table>
             </div>
         </div>
-        <div class="modal fade" id="addClient" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal" v-bind:class="{ 'show': modal_show}"  id="addClient" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -50,6 +50,10 @@
                             <input type="email" id="email" class="form-control" v-model="c.email">
                         </div>
                         <div class="form-group">
+                            <label for="pass">Пароль</label>
+                            <input type="text" id="pass" class="form-control" v-model="c.password">
+                        </div>
+                        <div class="form-group">
                             <label for="price_level">Уровень цен</label>
                             <select id="price_level" class="form-control" v-model="c.price_level">
                                 <option v-for="i in [0, 1, 2, 3, 4, 5, 6]">{{ i }}</option>
@@ -58,7 +62,9 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-primary" @click="addClient()" data-dismiss="modal">Сохранить</button>
+                        <div v-bind:class="{'alert-danger': hasError}">{{message}}</div>
+                        <button type="button" class="btn btn-primary" @click="addClient('CreateUser')">Сохранить</button>
+                        <button type="button" class="btn btn-primary" v-bind:class="{'d-none': !hasError}" @click="addClient('UpdateUser')">Обновить на modern-it</button>
                     </div>
                 </div>
             </div>
@@ -77,10 +83,14 @@
                     name: '',
                     login: '',
                     email:'',
-                    price_level: ''
+                    password:'',
+                    price_level: '',
+                    action:''
                 },
                 clients: [],
-                message: ''
+                message: '',
+                modal_show: false,
+                hasError: false
              }
         },
         mounted() {
@@ -94,8 +104,13 @@
                     clients_component.clients = response.data;
                 })
             },
-            addClient(){
+            addClient(action){
                 var clients_component = this;
+                this.message = '';
+                this.c.action = action;
+                if(this.c.action=='UpdateUser'){
+                    confirm('Это действие найдет на modern-it пользователя по email и перезапишет его данные. Уверены?');
+                }
                 axios.post('/api/addClient',
                     this.c,
                     /*{
@@ -106,9 +121,16 @@
                         }
                     }*/
                 ).then(function (msg) {
-                    clients_component.message = msg.data.status;
-                    clients_component.getList();
-                    clients_component.nulledC();
+                    clients_component.message = msg.data.status_msg;
+                    if (msg.data.status == 'ok'){
+                        clients_component.getList();
+                        clients_component.nulledC();
+                        clients_component.hasError = false;
+                        clients_component.modal_show = false;
+                    } else {
+                        clients_component.hasError = true;
+                    }
+
                 }).catch(function (msg) {
 
                     console.log('FAILURE!! msg', msg);
@@ -129,6 +151,7 @@
                 });
             },
             getClient(id){
+                this.nulledC();
                 var clients_component = this;
                 axios.post('/api/getClient',
                     {
@@ -152,6 +175,9 @@
                 this.c.login = '';
                 this.c.email = '';
                 this.c.price_level = '';
+                this.c.password = '';
+                this.hasError = false;
+                this.message = '';
             }
         }
     }

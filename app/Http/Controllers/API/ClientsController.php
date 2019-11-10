@@ -79,7 +79,7 @@ class ClientsController extends Controller
             'in' => md5($password),
              'token' => md5('b2b.modern'.date('Y-m-d'))
         ];
-        $ch = curl_init('http://127.0.0.1:8080/external_api/CreateUser.php?XDEBUG_SESSION_START');
+        $ch = curl_init('https://www.modern-it.ru/external_api/CreateUser.php?XDEBUG_SESSION_START');
         curl_setopt($ch, CURLOPT_POST, 1);
         curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -89,18 +89,7 @@ class ClientsController extends Controller
 
         return $result;
 
-      /*  $cl = new Client();
-        $res = $cl->request('POST', 'http://127.0.0.1:8080/external_api/CreateUser.php?XDEBUG_SESSION_START',
-            [
-            'param'=>['name' => $name,
-            'login' => $login,
-            'email' => $email,
-            'in' => md5('123456'),
-            'token' => md5('b2b.modern'.date('Y-m-d'))
-            ]
-        ]);
 
-        $a = $res->getBody();*/
     }
 
 }
